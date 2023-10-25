@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<!--Jumbotron-->
+<div class="container-fluid">
+    <div class="row justify-content-center rounded-3 mt-5 pb-4">
+        <div class="col-md-7 card shadow bg-light text-center align-items-center">
+            <div class="row">
+                <div class="col-md-4 mb-3 mt-3">
+                    <img class="img" style="max-height: 150px" src="static/img/logo.png" alt="Logo">
+                </div>
+                <div class="col-md-6  mt-5">
+                    <h1>Music Event Central</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Music Categories -->
+<div class="container">
+    <div class="row mt-5 mb-5 text-center">
+        <div class="col-sm-2">
+            <a class="nav-item nav-link" href="event_listing.html">
+                <figure>
+                    <img style=" max-width:120px" class="img-fluid" src="static/img/pop.png" alt="Pop Image">
+                    <h5 class="mt-2">POP</h5>
+                </figure>
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <a class="nav-item nav-link" href="event_listing.html">
+                <figure>
+                    <img style="max-width:120px" class="img-fluid" src="static/img/rock.png" alt="Rock Img">
+                    <h5 class="mt-2">ROCK</h5>
+                </figure>
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <a class="nav-item nav-link" href="event_listing.html">
+                <figure>
+                    <img style="max-width:120px" class="img-fluid" <img style=" max-width:120px" class="img-fluid"
+                        src="static/img/rap.png" alt="Rap Image">
+                    <h5 class="mt-2">Rap</h5>
+                </figure>
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <a class="nav-item nav-link" href="event_listing.html">
+                <figure>
+                    <img style="max-width:120px" class="img-fluid" <img style=" max-width:120px" class="img-fluid"
+                        src="static/img/classical.png" alt="Classical Image">
+                    <h5 class="mt-2">Classical</h5>
+                </figure>
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <a class="nav-item nav-link" href="event_listing.html">
+                <figure>
+                    <img style="max-width:120px" class="img-fluid" src="static/img/jazz.png" alt="Jazz Image">
+                    <h5 class="mt-2">Jazz</h5>
+                </figure>
+            </a>
+        </div>
+        <div class="col-sm-2">
+            <a class="nav-item nav-link" href="event_listing.html">
+                <figure>
+                    <img style="max-width:120px" class="img-fluid" <img style=" max-width:120px" class="img-fluid"
+                        src="static/img/country.png" alt="Country Image">
+                    <h5 class="mt-2">Country</h5>
+                </figure>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Recently Added Events -->
+<div class="container">
+    <h3>Recently Added Events</h3>
+    <!-- <nav> -->
+    <div class="card-group justify-content-center">
+        <a class="nav-item nav-link" href="event_details.html">
+            <div class="card mx-3 mb-5" style="width: 290px;">
+                <div class="card-header bg-success text-light"><strong>OPEN</strong></div>
+                <img class="card-img-top" style="height: 200px" src="static/img/event1.jpeg" alt="Event 1 Image">
+                <div class="card-body">
+                    <h5 class="card-title">Music Event 1</h5>
+                    <h6 class="fw-normal">Friday, August 18 | 1 - 2pm</h6>
+                    <h6 class="fw-light">WestsideHQ 3 Clewley Street Corinda, QLD 4075</h6>
+                    <h6 class="fw-light">A$25.00</h6>
+                </div>
+            </div>
+        </a>
+        <a class="nav-item nav-link" href="event_details.html">
+            <div class="card mx-3 mb-5" style="width: 290px;">
+                <div class="card-header bg-secondary text-light"><strong>INACTIVE</strong></div>
+                <img class="card-img-top" style="height: 200px" src="static/img/event2.jpeg" alt="Event 2 Image">
+                <div class="card-body">
+                    <h5 class="card-title">Music Event 2</h5>
+                    <h6 class="fw-normal">Saturday, August 19 | 1 - 2pm</h6>
+                    <h6 class="fw-light">WestsideHQ 3 Clewley Street Corinda, QLD 4075</h6>
+                    <h6 class="fw-light">A$25.00</h6>
+                </div>
+            </div>
+        </a>
+        <a class="nav-item nav-link" href="event_details.html">
+            <div class="card mx-3 mb-5" style="width: 290px;">
+                <div class="card-header bg-danger text-light"><strong>SOLD OUT</strong></div>
+                <img class="card-img-top" style="height: 200px" src="static/img/event3.jpeg" alt="Event 3 Image">
+                <div class="card-body">
+                    <h5 class="card-title">Music Event 3</h5>
+                    <h6 class="fw-normal">Sunday, August 20 | 1 - 2pm</h6>
+                    <h6 class="fw-light">WestsideHQ 3 Clewley Street Corinda, QLD 4075</h6>
+                    <h6 class="fw-light">A$25.00</h6>
+                </div>
+            </div>
+        </a>
+        <a class="nav-item nav-link" href="event_details.html">
+            <div class="card mx-3 mb-5" style="width: 290px;">
+                <div class="card-header bg-warning text-dark"><strong>CANCELLED</strong></div>
+                <img class="card-img-top" style="height: 200px" src="static/img/event4.jpeg" alt="Event 4 Image">
+                <div class="card-body">
+                    <h5 class="card-title">Music Event 4</h5>
+                    <h6 class="fw-normal">Monday, August 21 | 1 - 2pm</h6>
+                    <h6 class="fw-light">WestsideHQ 3 Clewley Street Corinda, QLD 4075</h6>
+                    <h6 class="fw-light">A$25.00</h6>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+{% endblock %}
