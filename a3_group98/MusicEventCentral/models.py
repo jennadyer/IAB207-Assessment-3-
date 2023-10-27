@@ -7,17 +7,17 @@ class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    start_time = db.Column(db.DateTime)
-    end_time = db.Column(db.DateTime)
-    start_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime)
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
     location = db.Column(db.String(200))
     total_tickets = db.Column(db.Integer)
     tickets_avail = db.Column(db.Integer)
     status = db.Column(db.String(80))
     description = db.Column(db.String(200))
     image = db.Column(db.String(400))
-    price = db.Column(db.String(3))
+    price = db.Column(db.Float(4))
     # genres =
 
     # add the foreign keys
@@ -58,6 +58,10 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     # relation to call user.comments and comment.created_by
     comments = db.relationship('Comment', backref='user')
+
+    # add the foreign keys
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    booking_id = db.Column(db.Integer, db.ForeignKey('bookings.id'))
 
     # string print method
     def __repr__(self):

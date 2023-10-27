@@ -24,6 +24,10 @@ def create_app():
     # utility module to display forms quickly
     bootstrap = Bootstrap5(app)
 
+    # config upload folder
+    UPLOAD_FOLDER = '/static/image'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
     # #initialize the login manager
     # login_manager = LoginManager()
 

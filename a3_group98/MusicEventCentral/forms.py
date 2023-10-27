@@ -11,13 +11,13 @@ ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
 # Create new event
 class EventForm(FlaskForm):
     name = StringField('Event Name', validators=[InputRequired()])
-    Location = StringField('Location', validators=[InputRequired()])
+    location = StringField('Location', validators=[InputRequired()])
     # genre
     start_date = DateField('Start Date', validators=[InputRequired()])
     start_time = TimeField('Start Time', validators=[InputRequired()])
     end_date = DateField('End Date', validators=[InputRequired()])
     end_time = TimeField('End Time', validators=[InputRequired()])
-    tickets_avail = IntegerField(
+    total_tickets = IntegerField(
         'Tickets Available', validators=[InputRequired()])
     price = StringField('Price', validators=[InputRequired()])
     description = TextAreaField('Description',
