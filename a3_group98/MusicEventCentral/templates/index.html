@@ -23,7 +23,7 @@
 <div class="container">
     <div class="row mt-5 mb-5 text-center">
         <div class="col-sm-2">
-            <a class="nav-item nav-link" href="events/listing">
+            <a class="nav-item nav-link" href="events/Pop">
                 <figure>
                     <img style=" max-width:120px" class="img-fluid" src="static/img/pop.png" alt="Pop Image">
                     <h5 class="mt-2">Pop</h5>
@@ -31,7 +31,7 @@
             </a>
         </div>
         <div class="col-sm-2">
-            <a class="nav-item nav-link" href="events/listing">
+            <a class="nav-item nav-link" href="events/Rock">
                 <figure>
                     <img style="max-width:120px" class="img-fluid" src="static/img/rock.png" alt="Rock Img">
                     <h5 class="mt-2">Rock</h5>
@@ -39,7 +39,7 @@
             </a>
         </div>
         <div class="col-sm-2">
-            <a class="nav-item nav-link" href="events/listing">
+            <a class="nav-item nav-link" href="events/Rap">
                 <figure>
                     <img style="max-width:120px" class="img-fluid" <img style=" max-width:120px" class="img-fluid"
                         src="static/img/rap.png" alt="Rap Image">
@@ -48,7 +48,7 @@
             </a>
         </div>
         <div class="col-sm-2">
-            <a class="nav-item nav-link" href="events/listing">
+            <a class="nav-item nav-link" href="events/Classical">
                 <figure>
                     <img style="max-width:120px" class="img-fluid" <img style=" max-width:120px" class="img-fluid"
                         src="static/img/classical.png" alt="Classical Image">
@@ -57,7 +57,7 @@
             </a>
         </div>
         <div class="col-sm-2">
-            <a class="nav-item nav-link" href="events/listing">
+            <a class="nav-item nav-link" href="events/Jazz">
                 <figure>
                     <img style="max-width:120px" class="img-fluid" src="static/img/jazz.png" alt="Jazz Image">
                     <h5 class="mt-2">Jazz</h5>
@@ -65,7 +65,7 @@
             </a>
         </div>
         <div class="col-sm-2">
-            <a class="nav-item nav-link" href="events/listing">
+            <a class="nav-item nav-link" href="events/Country">
                 <figure>
                     <img style="max-width:120px" class="img-fluid" <img style=" max-width:120px" class="img-fluid"
                         src="static/img/country.png" alt="Country Image">
@@ -89,49 +89,13 @@
                 <img class="card-img-top" style="height: 200px" src="{{ event.image }}" alt="Event 1 Image">
                 <div class="card-body" style="height: 150px">
                     <h5 class="card-title">{{ event.name }}</h5>
-                    <h6 class="fw-normal">{{ event.start_date }} | {{ event.start_time }}</h6>
+                    <h6 class="fw-normal">{{ event.start_date.strftime('%d %b %Y') }} | {{
+                        event.start_time.strftime('%I:%M %p') }}</h6>
                     <h6 class="fw-light">{{ event.location }}</h6>
                     <h6 class="fw-light">A${{ event.price }}</h6>
                 </div>
             </div>
         </a>
-
-        <!-- <a class="nav-item nav-link" href="events/details">
-            <div class="card mx-3 mb-5" style="width: 290px;">
-                <div class="card-header bg-secondary text-light"><strong>INACTIVE</strong></div>
-                <img class="card-img-top" style="height: 200px" src="static/img/event2.jpeg" alt="Event 2 Image">
-                <div class="card-body">
-                    <h5 class="card-title">{{ event.name }}</h5>
-                    <h6 class="fw-normal">{{ event.start_date }} | {{ event.start_time }}</h6>
-                    <h6 class="fw-light">{{ event.location }}</h6>
-                    <h6 class="fw-light">A${{ event.price }}</h6>
-                </div>
-            </div>
-        </a>
-        <a class="nav-item nav-link" href="events/details">
-            <div class="card mx-3 mb-5" style="width: 290px;">
-                <div class="card-header bg-danger text-light"><strong>SOLD OUT</strong></div>
-                <img class="card-img-top" style="height: 200px" src="static/img/event3.jpeg" alt="Event 3 Image">
-                <div class="card-body">
-                    <h5 class="card-title">{{ event.name }}</h5>
-                    <h6 class="fw-normal">{{ event.start_date }} | {{ event.start_time }}</h6>
-                    <h6 class="fw-light">{{ event.location }}</h6>
-                    <h6 class="fw-light">A${{ event.price }}</h6>
-                </div>
-            </div>
-        </a>
-        <a class="nav-item nav-link" href="events/details">
-            <div class="card mx-3 mb-5" style="width: 290px;">
-                <div class="card-header bg-warning text-dark"><strong>CANCELLED</strong></div>
-                <img class="card-img-top" style="height: 200px" src="static/img/event4.jpeg" alt="Event 4 Image">
-                <div class="card-body">
-                    <h5 class="card-title">{{ event.name }}</h5>
-                    <h6 class="fw-normal">{{ event.start_date }} | {{ event.start_time }}</h6>
-                    <h6 class="fw-light">{{ event.location }}</h6>
-                    <h6 class="fw-light">A${{ event.price }}</h6>
-                </div>
-            </div>
-        </a> -->
         {% endfor %}
     </div>
 </div>
