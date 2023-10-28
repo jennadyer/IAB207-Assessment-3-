@@ -74,7 +74,7 @@ def details(id):
     return render_template('events/event_details.html', event=events, form=form)
 
 
-# Route for creating events.
+# Route for comments.
 @ evtbp.route('/<id>/comment', methods=['GET', 'POST'])
 @login_required
 def comment(id):
@@ -92,25 +92,3 @@ def comment(id):
         # Always end with redirect when form is valid
         # print('Successfully created new event')
         return redirect(url_for('event.details', id=id))
-
-
-# @evtbp.route('/<id>/comment', methods=['GET', 'POST'])
-# @login_required
-# def comment(id):
-#     form = CommentForm()
-#     # get the event object associated to the page and the comment
-#     event = db.session.scalar(db.select(Event).where(Event.id == id))
-#     if form.validate_on_submit():
-#         # read the comment from the form
-#         comment = Comment(text=form.text.data, event=event,
-#                           user=current_user)
-#         # here the back-referencing works - comment.event is set
-#         # and the link is created
-#         db.session.add(comment)
-#         db.session.commit()
-#         # flashing a message which needs to be handled by the html
-#         flash('Your comment has been added', 'success')
-#         # print('Your comment has been added', 'success')
-#     # using redirect sends a GET request to event.details
-#         return redirect(url_for('event.details', id=id))
-#     return render_template('events/event_details.html', form=form)
