@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% from 'bootstrap5/form.html' import render_form %}
+
 {% block content %}
 
 <body>
@@ -126,6 +128,10 @@
                             </div>
                         </div>
                         {% endfor %}
+                        <!-- I CANT GET THIS LINE TO WORK
+                        render_form(form,"/events/{0}/comment".format(event.id))
+                        -->
+                        
                     </div>
                 </div>
                 <!-- <h6 class="col-sm-8 fw-bold">MusicLover123</h6> -->

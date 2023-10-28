@@ -1,33 +1,21 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from .models import Event
-from .forms import EventForm
+from .models import Event, Comment
+from .forms import EventForm, CommentForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 evtbp = Blueprint('event', __name__, url_prefix='/events')
 
 
-# Route for displaying all events. Filtered by start_date.
 @evtbp.route('/listing')
 def listing():
-    events = db.session.scalars(
-        db.select(Event).order_by(Event.start_date.asc())).all()
+    events = db.session.scalars(db.select(Event)).all()
     return render_template('events/event_listing.html', events=events)
 
 
-# Route for displaying events by genre. Filtered by start_date.
-@ evtbp.route('/<genre>')
-def genres(genre):
-    events = db.session.scalars(
-        db.select(Event).where(Event.genre == genre).order_by(Event.start_date.asc())).all()
-    print(len(events))
-    return render_template('events/event_listing.html', events=events)
-
-
-# Route for creating events.
-@ evtbp.route('/create', methods=['GET', 'POST'])
+@evtbp.route('/create', methods=['GET', 'POST'])
 def create():
     print('Method type: ', request.method)
     form = EventForm()
@@ -35,7 +23,7 @@ def create():
         # call the function that checks and returns image
         db_file_path = check_upload_file(form)
         event = Event(name=form.name.data, start_time=form.start_time.data, end_time=form.end_time.data,
-                      start_date=form.start_date.data, end_date=form.end_date.data, location=form.location.data, genre=form.genre.data,
+                      start_date=form.start_date.data, end_date=form.end_date.data, location=form.location.data,
                       total_tickets=form.total_tickets.data, price=form.price.data, description=form.description.data,
                       image=db_file_path)
         # add the object to the db session
@@ -64,32 +52,34 @@ def check_upload_file(form):
     fp.save(upload_path)
     return db_upload_path
 
+#@evtbp.route('/create')
+#def create():
+#    return render_template('events/event_creation.html')
 
-# Route for displaying details of selected event.
-@ evtbp.route('/details=<id>')
+
+@evtbp.route('/details=<id>')
 def details(id):
     event = db.session.scalar(db.select(Event).where(Event.id == id))
     # create the comment form
     # form = CommentForm()
     return render_template('events/event_details.html', event=event)
 
-
-# @evtbp.route('/<id>/comment', methods=['GET', 'POST'])
-# @login_required
-# def comment(id):
-#     form = CommentForm()
-#     # get the event object associated to the page and the comment
-#     event = db.session.scalar(db.select(Event).where(Event.id == id))
-#     if form.validate_on_submit():
-#         # read the comment from the form
-#         comment = Comment(text=form.text.data, event=event,
-#                           user=current_user)
-#         # here the back-referencing works - comment.event is set
-#         # and the link is created
-#         db.session.add(comment)
-#         db.session.commit()
-#         # flashing a message which needs to be handled by the html
-#         flash('Your comment has been added', 'success')
-#         # print('Your comment has been added', 'success')
-#     # using redirect sends a GET request to destination.show
-#     return redirect(url_for('event.show', id=id))
+@evtbp.route('/<id>/comment', methods=['GET', 'POST'])  
+@login_required
+def comment(id):  
+    form = CommentForm()  
+    #get the event object associated to the page and the comment
+    event = db.session.scalar(db.select(Event).where(Event.id==id))
+    if form.validate_on_submit():  
+      #read the comment from the form
+      comment = Comment(text=form.text.data, event=event,
+                        user=current_user) 
+      #here the back-referencing works - comment.event is set
+      # and the link is created
+      db.session.add(comment) 
+      db.session.commit() 
+      #flashing a message which needs to be handled by the html
+      flash('Your comment has been added', 'success')  
+      # print('Your comment has been added', 'success') 
+    # using redirect sends a GET request to destination.show
+    return redirect(url_for('event.event_details', id=id))
