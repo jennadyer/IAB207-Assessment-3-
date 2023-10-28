@@ -23,30 +23,24 @@
             <div class="col-md-8">
                 <h4 class=" col-sm-2 rounded-3 text-center border bg-success text-light">OPEN</h4>
                 <h1>{{ event.name }}</h1>
-                <!-- <h5 class=" text-muted">Join us for a fun day of Music</h5> -->
-                <!-- <h6>By <strong>MusicLover123</strong></h6> -->
+                <!-- <h6>By <strong>{{ event.user_id }}</strong></h6> -->
                 <h2>Where</h2>
                 <p>{{ event.location }}</p>
                 <h2>When</h2>
                 <div class="row">
                     <div class="col-md-3">
                         <h6>Start</h6>
-                        <p>{{ event.start_time }}:{{ event.start_time.minute }} {{ event.start_date }}</p>
+                        <p>{{ event.start_date.strftime('%d %b %Y') }} | {{ event.start_time.strftime('%H:%M %p') }}</p>
                     </div>
                     <div class="col-md-3">
                         <h6>End</h6>
-                        <p>{{ event.end_date }} {{ event.end_time }}</p>
+                        <p>{{ event.end_date.strftime('%d %b %Y') }} | {{ event.end_time.strftime('%I:%M %p') }}</p>
                     </div>
                 </div>
-                <!-- <p>{{ event.start_date }} {{ event.start_time }} - {{ event.end_date }} {{ event.end_time }}</p> -->
                 <h2>About This Event</h2>
                 <p>{{ event.description }}</p>
                 <div class="row">
-                    <p class="col-sm-1 rounded border text-center">Pop</p>
-                    <p class="col-sm-1"></p>
-                    <p class="col-sm-1 rounded border text-center">Rock</p>
-                    <p class="col-sm-1"></p>
-                    <p class="col-sm-1 rounded border text-center">Rap</p>
+                    <p class="col-sm-1 rounded border text-center">{{ event.genre }}</p>
                 </div>
             </div>
             <div class="col-md-3">
