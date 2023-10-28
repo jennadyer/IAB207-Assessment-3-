@@ -19,7 +19,8 @@
                             <div class="row">
                                 <h2 class="card-title col-md-9">{{ event.name }}</h2>
                             </div>
-                            <h6 class="fw-light">{{ event.start_date }} | {{ event.start_time }}</h6>
+                            <h6 class="fw-light">{{ event.start_date.strftime('%d %b %Y') }} | {{
+                                event.start_time.strftime('%I:%M %p') }}</h6>
                             <h6 class="fw-light">{{ event.location }}</h6>
                             <h6 class="fw-light">A${{ event.price }}</h6>
                         </div>
@@ -28,69 +29,6 @@
             </a>
         </div>
         {% endfor %}
-        <!-- <div class="card mt-3 mb-3 border">
-            <a class="nav-item nav-link" href="details">
-                <div class="row">
-                    <div class="col-md-4">
-                        <img class="card-img-top" style="height: 300px" src="/static/img/event2.jpeg"
-                            alt="Event 2 Image">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-header bg-secondary text-light"><strong>INACTIVE</strong></div>
-                        <div class="card-body">
-                            <div class="row">
-                                <h2 class="card-title col-md-9">Music Event 2</h2>
-                            </div>
-                            <h6 class="fw-light">Saturday, August 19 | 1 - 2pm</h6>
-                            <h6 class="fw-light">WestsideHQ 3 Clewley Street Corinda, QLD 4075</h6>
-                            <h6 class="fw-light">A$25.00</h6>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="card mt-3 mb-3 border">
-            <a class="nav-item nav-link" href="details">
-                <div class="row">
-                    <div class="col-md-4">
-                        <img class="card-img-top" style="height: 300px" src="/static/img/event3.jpeg"
-                            alt="Event 3 Image">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-header bg-danger text-light"><strong>SOLD OUT</strong></div>
-                        <div class="card-body">
-                            <div class="row">
-                                <h2 class="card-title col-md-9">Music Event 3</h2>
-                            </div>
-                            <h6 class="fw-light">Sunday, August 20 | 1 - 2pm</h6>
-                            <h6 class="fw-light">WestsideHQ 3 Clewley Street Corinda, QLD 4075</h6>
-                            <h6 class="fw-light">A$25.00</h6>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="card mt-3 mb-3 border">
-            <a class="nav-item nav-link" href="details">
-                <div class="row">
-                    <div class="col-md-4">
-                        <img class="card-img-top" style="height: 300px" src="/static/img/event4.jpeg"
-                            alt="Event 4 Image">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-header bg-warning text-dark"><strong>CANCELLED</strong></div>
-                        <div class="card-body">
-                            <div class="row">
-                                <h2 class="card-title col-md-9">Music Event 4</h2>
-                            </div>
-                            <h6 class="fw-light">Monday, August 21 | 1 - 2pm</h6>
-                            <h6 class="fw-light">WestsideHQ 3 Clewley Street Corinda, QLD 4075</h6>
-                            <h6 class="fw-light">A$25.00</h6>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div> -->
     </div>
 </body>
 {% endblock %}
