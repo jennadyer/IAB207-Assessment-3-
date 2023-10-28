@@ -1,5 +1,6 @@
 from . import db
 from datetime import datetime
+from flask_login import UserMixin
 
 
 # --- Events Table ---
@@ -24,7 +25,7 @@ class Event(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # ... Create the Comments db.relationship
     # relation to call destination.comments and comment.destination
-    comments = db.relationship('Comment', backref='destination')
+    comments = db.relationship('Comment', backref='events')
 
     # string print method
     def __repr__(self):
@@ -48,20 +49,16 @@ class Booking(db.Model):
 
 
 # --- User Table ---
-class User(db.Model):
-    __tablename__ = 'users'  # good practice to specify table name
+class User(db.Model, UserMixin):
+    __tablename__ = 'users' # good practice to specify table name
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), index=True, unique=True, nullable=False)
     emailid = db.Column(db.String(100), index=True, nullable=False)
-    # password should never stored in the DB, an encrypted password is stored
-    # the storage should be at least 255 chars long, depending on your hashing algorithm
+	#password is never stored in the DB, an encrypted password is stored
+	# the storage should be at least 255 chars long
     password_hash = db.Column(db.String(255), nullable=False)
     # relation to call user.comments and comment.created_by
     comments = db.relationship('Comment', backref='user')
-
-    # add the foreign keys
-    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
-    booking_id = db.Column(db.Integer, db.ForeignKey('bookings.id'))
 
     # string print method
     def __repr__(self):
