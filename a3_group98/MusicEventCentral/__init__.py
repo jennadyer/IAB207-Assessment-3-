@@ -53,16 +53,3 @@ def create_app():
     app.register_blueprint(events.evtbp)
 
     return app
-
-
-#def create_app():
-#    app = Flask(__name__)
-
-# add Blueprints
-#from . import views
-#app.register_blueprint(views.bp)
-
-#from . import events
-#app.register_blueprint(events.evtbp)
-
-#return app

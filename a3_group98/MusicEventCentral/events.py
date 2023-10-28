@@ -4,6 +4,7 @@ from .forms import EventForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
+from flask_login import login_required
 
 evtbp = Blueprint('event', __name__, url_prefix='/events')
 
@@ -51,9 +52,9 @@ def check_upload_file(form):
     fp.save(upload_path)
     return db_upload_path
 
-# @evtbp.route('/create')
-# def create():
-#     return render_template('events/event_creation.html')
+#@evtbp.route('/create')
+#def create():
+#    return render_template('events/event_creation.html')
 
 
 @evtbp.route('/details=<id>')
@@ -62,3 +63,23 @@ def details(id):
     # create the comment form
     # form = CommentForm()
     return render_template('events/event_details.html', event=event)
+
+@evtbp.route('/<id>/comment', methods=['GET', 'POST'])  
+@login_required
+def comment(id):  
+    form = CommentForm()  
+    #get the event object associated to the page and the comment
+    event = db.session.scalar(db.select(Event).where(Event.id==id))
+    if form.validate_on_submit():  
+      #read the comment from the form
+      comment = Comment(text=form.text.data, event=event,
+                        user=current_user) 
+      #here the back-referencing works - comment.event is set
+      # and the link is created
+      db.session.add(comment) 
+      db.session.commit() 
+      #flashing a message which needs to be handled by the html
+      flash('Your comment has been added', 'success')  
+      # print('Your comment has been added', 'success') 
+    # using redirect sends a GET request to destination.show
+    return redirect(url_for('event.show', id=id))

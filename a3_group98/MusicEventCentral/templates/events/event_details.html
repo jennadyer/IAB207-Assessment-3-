@@ -18,7 +18,7 @@
     <!-- Event Details -->
     <div class="container">
         <div class="row justify-content-start">
-            <div class="col-md-8"">
+            <div class="col-md-8">
                 <h4 class=" col-sm-2 rounded-3 text-center border bg-success text-light">OPEN</h4>
                 <h1>{{ event.name }}</h1>
                 <!-- <h5 class=" text-muted">Join us for a fun day of Music</h5> -->
@@ -116,54 +116,64 @@
                 <!-- Comment Section -->
                 <div class="card mt-3 mb-3">
                     <h4 class="card-header text-center">Comments</h4>
-                    <div class=" card-body">
+                    <div class="card-body">
+                        {% for comment in event.comments %}
                         <div class="row">
-                            <h6 class="col-sm-8 fw-bold">MusicLover123</h6>
-                            <h6 class="col-sm-4 small text-muted">10/07/23</h6>
-                            <h6 class="col-sm-12 fw-light">Love it!</h6>
-                            <hr>
+                            <div class="col-md-12">
+                                <b>{{ comment.user.name }} <span class="ml-2 text-muted">{{ comment.created_at
+                                        }}</span></b>
+                                <p>{{ comment.text }}</p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <h6 class="col-sm-8 fw-bold">MusicLover321</h6>
-                            <h6 class="col-sm-4 small text-muted">12/07/23</h6>
-                            <h6 class="col-sm-12 fw-light">Went last year! So good!</h6>
-                            <hr>
-                        </div>
-                        <div class="row">
-                            <h6 class="col-sm-8 fw-bold">MusicAllDay</h6>
-                            <h6 class="col-sm-4 small text-muted">10/04/23</h6>
-                            <h6 class="col-sm-12 fw-light">Just got tickets! Can't wait!</h6>
-                        </div>
+                        {% endfor %}
                     </div>
-                    <!-- Add Comment Modal Window -->
-                    <div class="card-footer">
-                        <div class="text-center">
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                data-bs-target="#commentModal">
-                                <h6>Comment</h6>
-                            </button>
-                        </div>
+                </div>
+                <!-- <h6 class="col-sm-8 fw-bold">MusicLover123</h6> -->
+                <!-- <h6 class="col-sm-4 small text-muted">10/07/23</h6> -->
+                <!-- <h6 class="col-sm-12 fw-light">Love it!</h6> -->
+                <!-- <hr> -->
 
-                        <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
-                            aria-labelledby="commentModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="commentModalLabel">New Comment</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="message-text" class="col-form-label">Comment:</label>
-                                                <textarea class="form-control" id="message-text"></textarea>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary">Post</button>
-                                    </div>
+
+                <!--<div class="row"> -->
+                <!--    <h6 class="col-sm-8 fw-bold">MusicLover321</h6> -->
+                <!--    <h6 class="col-sm-4 small text-muted">12/07/23</h6> -->
+                <!--    <h6 class="col-sm-12 fw-light">Went last year! So good!</h6> -->
+                <!--    <hr> -->
+                <!--</div> -->
+                <!--<div class="row"> -->
+                <!--   <h6 class="col-sm-8 fw-bold">MusicAllDay</h6> -->
+                <!--    <h6 class="col-sm-4 small text-muted">10/04/23</h6> -->
+                <!--    <h6 class="col-sm-12 fw-light">Just got tickets! Can't wait!</h6> -->
+                <!--</div> -->
+
+                <!-- Add Comment Modal Window -->
+                <div class="card-footer">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#commentModal">
+                            <h6>Comment</h6>
+                        </button>
+                    </div>
+
+                    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
+                        aria-labelledby="commentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="commentModalLabel">New Comment</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Comment:</label>
+                                            <textarea class="form-control" id="message-text"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary">Post</button>
                                 </div>
                             </div>
                         </div>
@@ -171,6 +181,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     </div>
 </body>
