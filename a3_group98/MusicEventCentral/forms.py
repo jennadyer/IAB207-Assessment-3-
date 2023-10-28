@@ -1,7 +1,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms.fields import *
-from wtforms.validators import InputRequired, Length, Email, EqualTo
+from wtforms.validators import InputRequired, Email, EqualTo, NoneOf
 from flask_wtf.file import FileRequired, FileField, FileAllowed
 
 
@@ -12,7 +12,8 @@ ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
 class EventForm(FlaskForm):
     name = StringField('Event Name', validators=[InputRequired()])
     location = StringField('Location', validators=[InputRequired()])
-    # genre
+    genre = SelectField(u'Please Select a Genre that Best Describes Your Event', choices=[
+                        'Genre', 'Pop', 'Rock', 'Rap', 'Classical', 'Jazz', 'Country'], validators=[NoneOf('Genre', 'Please select a genre.')])
     start_date = DateField('Start Date', validators=[InputRequired()])
     start_time = TimeField('Start Time', validators=[InputRequired()])
     end_date = DateField('End Date', validators=[InputRequired()])
@@ -25,6 +26,7 @@ class EventForm(FlaskForm):
     image = FileField('Destination Image', validators=[
         FileRequired(message='Image cannot be empty'),
         FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')])
+
     submit = SubmitField("Submit")
 
 
@@ -52,6 +54,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
+# # User comment
 class CommentForm(FlaskForm):
-  text = TextAreaField('Comment', [InputRequired()])
-  submit = SubmitField('Create')
+    text = TextAreaField('Comment', [InputRequired()])
+    submit = SubmitField('Create')
