@@ -82,7 +82,7 @@
     <h3>Recently Added Events</h3>
     <!-- <nav> -->
     <div class="card-group justify-content-center">
-        {% for event in events %}
+        {% for event in events if event.id > (events|length ) - 4 %}
         <a class="nav-item nav-link" href="events/details={{ event.id }}">
             <div class="card mx-3 mb-5" style="width: 290px;">
                 <div class="card-header bg-success text-light"><strong>OPEN</strong></div>
