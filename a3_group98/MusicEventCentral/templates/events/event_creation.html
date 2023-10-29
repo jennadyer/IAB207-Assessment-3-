@@ -11,7 +11,15 @@
         <div class="row justify-content-start ">
             <h1 class="mt-3 mb-3">Create Event</h1>
             <hr>
+            {% if not current_user.is_authenticated %}
+            <div class="notification is-danger">
+                Please Login to access this content. Go to <a href="{{ url_for('auth.login') }}">login
+                    page</a>.
+            </div>
+            {% endif %}
+            {% if current_user.is_authenticated %}
             {{render_form(form)}}
+            {% endif %}
         </div>
     </div>
 </body>
