@@ -27,27 +27,33 @@ def genres(genre):
 
 
 # Route for creating events.
-@ evtbp.route('/create', methods=['GET', 'POST'])
+@evtbp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
     print('Method type: ', request.method)
     form = EventForm()
     if form.validate_on_submit():
-        # call the function that checks and returns image
         db_file_path = check_upload_file(form)
-        event = Event(name=form.name.data, start_time=form.start_time.data, end_time=form.end_time.data,
-                      start_date=form.start_date.data, end_date=form.end_date.data, location=form.location.data, genre=form.genre.data,
-                      total_tickets=form.total_tickets.data, price=form.price.data, description=form.description.data,
-                      image=db_file_path)
-        # add the object to the db session
+        event = Event(
+            name=form.name.data,
+            start_time=form.start_time.data,
+            end_time=form.end_time.data,
+            start_date=form.start_date.data,
+            end_date=form.end_date.data,
+            location=form.location.data,
+            genre=form.genre.data,
+            total_tickets=form.total_tickets.data,
+            price=form.price.data,
+            description=form.description.data,
+            image=db_file_path,
+            user_id=current_user.id  # Set the user_id here
+        )
         db.session.add(event)
-        # commit to the database
         db.session.commit()
         flash('Successfully created new event', 'success')
-        # Always end with redirect when form is valid
-        # print('Successfully created new event')
         return redirect(url_for('event.create'))
     return render_template('events/event_creation.html', form=form)
+
 
 
 def check_upload_file(form):
@@ -77,25 +83,60 @@ def details(id):
     return render_template('events/event_details.html', event=events, form=form, b_form=b_form)
 
 
-# Route for booking.
-@ evtbp.route('/<id>/booking', methods=['GET', 'POST'])
+@evtbp.route('/<id>/booking', methods=['GET', 'POST'])
 @login_required
 def booking(id):
     form = BookingForm()
-    # get the event object associated to the event and the comment
     event = db.session.scalar(db.select(Event).where(Event.id == id))
+
+    # Debugging: Print the event and user details
+    print("Event User ID:", event.user_id)
+    print("Current User ID:", current_user.id)
+
     if form.validate_on_submit():
-        # read the booking details from the form
-        booking = Booking(num_tickets=form.num_tickets.data, total_cost=form.num_tickets.data * event.price,
-                          event_id=event.id, user_id=current_user.id)
-        # add the object to the db session
+        # Debugging: Check if form validation is successful
+        print("Form is validated")
+
+        # Ensure the user making the booking is the current user (if not, handle as needed)
+        if event.user_id != current_user.id:
+            flash('You are not authorized to make this booking.', 'danger')
+            return redirect(url_for('event.details', id=id))
+
+        # Read the booking details from the form
+        booking = Booking(
+            num_tickets=form.num_tickets.data,
+            total_cost=form.num_tickets.data * event.price,
+            event_id=event.id,
+            user_id=current_user.id
+        )
         db.session.add(booking)
         db.session.commit()
 
+        # Debugging: Check if the booking is created and committed to the database
+        print("Booking created and committed")
+
         flash('Successfully created booking', 'success')
-        # Always end with redirect when form is valid
-        # print('Successfully created new event')
-        return redirect(url_for('event.details', id=id, show_modal=True))
+
+        # Redirect to booking history
+        return redirect(url_for('event.booking_history'))
+
+    return render_template('events/booking_history.html', event=event, form=form)
+
+
+
+
+@evtbp.route('/booking_history')
+@login_required
+def booking_history():
+    # Retrieve the user's booking history and related event data
+    user_bookings = db.session.query(Booking, Event).\
+        join(Event, Booking.event_id == Event.id).\
+        filter(Booking.user_id == current_user.id).all()
+
+    return render_template('events/booking_history.html', user_bookings=user_bookings)
+
+
+
 
 
 # Route for comments.
