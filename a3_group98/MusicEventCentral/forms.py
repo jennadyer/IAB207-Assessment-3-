@@ -1,7 +1,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms.fields import *
-from wtforms.validators import InputRequired, Email, EqualTo, NoneOf
+from wtforms.validators import InputRequired, Email, EqualTo, NoneOf, NumberRange
 from flask_wtf.file import FileRequired, FileField, FileAllowed
 
 
@@ -30,6 +30,13 @@ class EventForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+# Create booking
+class BookingForm(FlaskForm):
+    num_tickets = IntegerField(
+        'Select number of tickets', validators=[InputRequired(), NumberRange(min=1, message='Minimum tickets is 1')])
+    submit = SubmitField('Buy Now')
+
+
 # creates the login information
 class LoginForm(FlaskForm):
     user_name = StringField("User Name", validators=[
@@ -38,9 +45,8 @@ class LoginForm(FlaskForm):
                              InputRequired('Enter user password')])
     submit = SubmitField("Login")
 
- # this is the registration form
 
-
+# this is the registration form
 class RegisterForm(FlaskForm):
     user_name = StringField("User Name", validators=[InputRequired()])
     email_id = StringField("Email Address", validators=[
@@ -54,7 +60,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
-# # User comment
+# User comment
 class CommentForm(FlaskForm):
     text = TextAreaField('Comment', [InputRequired()])
     submit = SubmitField('Create')

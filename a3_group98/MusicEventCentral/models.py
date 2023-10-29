@@ -36,8 +36,9 @@ class Event(db.Model):
 class Booking(db.Model):
     __tablename__ = 'bookings'
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime)
+    date = db.Column(db.DateTime, default=datetime.now())
     num_tickets = db.Column(db.Integer)
+    total_cost = db.Column(db.Float)
 
     # add the foreign keys
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from .models import Event, Comment
-from .forms import EventForm, CommentForm
+from .models import Event, Comment, Booking
+from .forms import EventForm, CommentForm, BookingForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
@@ -28,6 +28,7 @@ def genres(genre):
 
 # Route for creating events.
 @ evtbp.route('/create', methods=['GET', 'POST'])
+@login_required
 def create():
     print('Method type: ', request.method)
     form = EventForm()
@@ -71,7 +72,30 @@ def details(id):
     events = db.session.scalar(db.select(Event).where(Event.id == id))
     # create the comment form
     form = CommentForm()
-    return render_template('events/event_details.html', event=events, form=form)
+    # create the booking form
+    b_form = BookingForm()
+    return render_template('events/event_details.html', event=events, form=form, b_form=b_form)
+
+
+# Route for booking.
+@ evtbp.route('/<id>/booking', methods=['GET', 'POST'])
+@login_required
+def booking(id):
+    form = BookingForm()
+    # get the event object associated to the event and the comment
+    event = db.session.scalar(db.select(Event).where(Event.id == id))
+    if form.validate_on_submit():
+        # read the booking details from the form
+        booking = Booking(num_tickets=form.num_tickets.data, total_cost=form.num_tickets.data * event.price,
+                          event_id=event.id, user_id=current_user.id)
+        # add the object to the db session
+        db.session.add(booking)
+        db.session.commit()
+
+        flash('Successfully created booking', 'success')
+        # Always end with redirect when form is valid
+        # print('Successfully created new event')
+        return redirect(url_for('event.details', id=id, show_modal=True))
 
 
 # Route for comments.
