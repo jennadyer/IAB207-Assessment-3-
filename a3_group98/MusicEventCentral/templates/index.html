@@ -85,7 +85,11 @@
         {% for event in events if event.id > (events|length ) - 4 %}
         <a class="nav-item nav-link" href="events/details={{ event.id }}">
             <div class="card mx-3 mb-5" style="width: 290px;">
-                <div class="card-header bg-success text-light"><strong>OPEN</strong></div>
+                {% if event.status == 'Sold Out': %} <h4 class="card-header bg-danger text-light">SOLD OUT</h4>
+                {% elif event.status == 'Open': %} <h4 class="card-header bg-success text-light">OPEN</h4>
+                {% elif event.status == 'Inactive': %} <h4 class="card-header bg-secondary text-light">INACTIVE</h4>
+                {% elif event.status == 'Cancelled': %} <h4 class="card-header bg-warning text-dark">CANCELLED</h4>
+                {% endif %}
                 <img class="card-img-top" style="height: 200px" src="{{ event.image }}" alt="Event 1 Image">
                 <div class="card-body" style="height: 150px">
                     <h5 class="card-title">{{ event.name }}</h5>

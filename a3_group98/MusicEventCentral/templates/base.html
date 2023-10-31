@@ -48,7 +48,8 @@
                         <a class="nav-item nav-link disabled text-muted" href="#">Welcome {{current_user.name}}</a>
                         <a class="nav-item nav-link" href="/events/listing">Find Events</a>
                         <a class="nav-item nav-link" href="{{ url_for('event.create') }}">Create Event</a>
-
+                        <a class="nav-item nav-link" href="{{ url_for('event.user_events') }}">My Events</a>
+                        <a class="nav-item nav-link" href="{{ url_for('event.booking_history') }}">Booking History</a>
 
                         <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
                         {% else %}
