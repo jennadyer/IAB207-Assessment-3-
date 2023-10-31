@@ -6,7 +6,14 @@
     <!-- Booking History -->
     <div class="container">
         <h1 class="mt-3 mb-3">Booking History</h1>
-        
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <h4 class="text-success">{{ message }}</h4>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         {% for booking, event in user_bookings %}
         <div class="card mt-3 mb-3 border">
             <div class="row">
@@ -16,23 +23,36 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h2 class="card-title">{{ event.name }}</h2>
-                        <h6 class="fw-light">When</h6>
                         <div class="row">
-                            <div class="col-md-3">
-                                <h6>Start</h6>
-                                <p>{{ event.start_date }} {{ event.start_time }}</p>
+                            <div class="col-md-8">
+                                <h4 class="fw-dark">When</h4>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <h6>Start</h6>
+                                        <p>{{ event.start_date.strftime('%d %b %Y') }} | {{
+                                            event.start_time.strftime('%H:%M %p') }}</p>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h6>End</h6>
+                                        <p>{{ event.end_date.strftime('%d %b %Y') }} | {{
+                                            event.end_time.strftime('%H:%M %p') }}</p>
+                                    </div>
+                                </div>
+                                <h6 class="fw-light">{{ event.location }}</h6>
                             </div>
-                            <div class="col-md-3">
-                                <h6>End</h6>
-                                <p>{{ event.end_date }} {{ event.end_time }}</p>
+                            <div class="col-md-3 text-center">
+                                <h4>Tickets Booked</h4>
+                                <h5 class="text-muted">{{ booking.num_tickets }}</h5>
+                                <h4>Total Cost</h4>
+                                <h5 class="text-muted">A${{ booking.total_cost }}</h5>
                             </div>
                         </div>
-                        <h6 class="fw-light">{{ event.location }}</h6>
                         <hr>
                         <div class="row justify-content-center text-center">
                             <div class="col-md-5 border">
                                 <h4 class="card-text">Order Placed</h4>
-                                <p class="card-text text-muted"><strong>{{ booking.date.strftime('%I:%M%p %d/%m/%Y') }}</strong></p>
+                                <p class="card-text text-muted"><strong>{{ booking.date.strftime('%I:%M%p %d/%m/%Y')
+                                        }}</strong></p>
                             </div>
                             <div class="col-md-5 border">
                                 <h4 class="card-text">Order Number</h4>

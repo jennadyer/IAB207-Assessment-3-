@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body>
+    <!-- Event List -->
+    <div class="container ">
+        <h1 class="mt-3 mb-3">My Events</h1>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <h4 class="text-success">{{ message }}</h4>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% for event in events %}
+        <div class="card mt-3 mb-3 border">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <img class="card-img-top" style="height: 300px" src="{{ event.image }}" alt="Event 1 Image">
+                </div>
+                <div class="col-md-8">
+                    {% if event.status == 'Sold Out': %} <h4 class="card-header bg-danger text-light">SOLD OUT</h4>
+                    {% elif event.status == 'Open': %} <h4 class="card-header bg-success text-light">OPEN</h4>
+                    {% elif event.status == 'Inactive': %} <h4 class="card-header bg-secondary text-light">INACTIVE
+                    </h4>
+                    {% elif event.status == 'Cancelled': %} <h4 class="card-header bg-warning text-dark">CANCELLED
+                    </h4>
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="row">
+                            <h2 class="card-title col-md-9">{{ event.name }}</h2>
+                        </div>
+                        <h6 class="fw-light">{{ event.start_date.strftime('%d %b %Y') }} | {{
+                            event.start_time.strftime('%I:%M %p') }}</h6>
+                        <h6 class="fw-light">{{ event.location }}</h6>
+                        <h6 class="fw-light">A${{ event.price }}</h6>
+                        <a href="/events/update={{ event.id }}">
+                            <button type="button" class="mt-3 btn btn-primary nav-item">
+                                <h5>Update Event</h5>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

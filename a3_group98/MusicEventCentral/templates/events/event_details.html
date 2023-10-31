@@ -5,6 +5,13 @@
 {% block content %}
 
 <body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <h2 class="text-center mt-5 text-danger">{{ message }}</h2>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     <!-- Event Image -->
     <div class="container-fluid">
         <div class="row justify-content-center mt-5 pb-4">
@@ -20,7 +27,16 @@
     <div class="container">
         <div class="row justify-content-start">
             <div class="col-md-8"">
-                <h4 class=" col-sm-2 rounded-3 text-center border bg-success text-light">OPEN</h4>
+                {% if event.status == 'Sold Out': %} <h4
+                class=" col-sm-2 rounded-3 text-center border bg-danger text-light">SOLD OUT</h4>
+                {% elif event.status == 'Open': %} <h4
+                    class=" col-sm-2 rounded-3 text-center border bg-success text-light">OPEN</h4>
+                {% elif event.status == 'Inactive': %} <h4
+                    class=" col-sm-2 rounded-3 text-center border bg-secondary text-light">INACTIVE</h4>
+                {% elif event.status == 'Cancelled': %} <h4
+                    class=" col-sm-2 rounded-3 text-center border bg-warning text-dark">CANCELLED</h4>
+                {% endif %}
+
                 <h1>{{ event.name }}</h1>
                 <!-- <h6>By <strong>{{ event.user_id }}</strong></h6> -->
                 <h2>Where</h2>
@@ -41,7 +57,7 @@
                 <h2>About This Event</h2>
                 <p>{{ event.description }}</p>
                 <div class="row">
-                    <p class="col-sm-1 rounded border text-center">{{ event.genre }}</p>
+                    <p class="col-md-2 mx-3 rounded border text-center">{{ event.genre }}</p>
                 </div>
             </div>
             <div class="col-md-3">
@@ -51,23 +67,30 @@
                             <p></p>
                             <h2 class="card-title">A${{ event.price }}</h2>
                             <!-- Button trigger modal -->
+                            {% if event.status == 'Open'%}
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#bookingModal">
                                 <h4>Get Tickets</h4>
                             </button>
+                            {% else %}
+                            <button type="button" disabled class="btn btn-secondary" data-bs-toggle="modal"
+                                data-bs-target="#bookingModal">
+                                <h4>Get Tickets</h4>
+                            </button>
+                            {% endif %}
                         </div>
 
 
                         <!-- Book Ticket (Modal Window) -->
                         <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel"
                             aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog modal-dialog-centered modal-lg text-center">
                                 <div class="modal-content">
                                     {% if not current_user.is_authenticated %}
                                     <div class="notification is-danger">
-                                        Please Login to access this content. Go to <a
-                                            href="{{ url_for('auth.login') }}">login
-                                            page</a>.
+                                        <h3 class="mt-5"> Login to access this content. Go to <a
+                                                href="{{ url_for('auth.login') }}">login
+                                                page</h3></a>.
                                     </div>
                                     {% endif %}
                                     {% if current_user.is_authenticated %}
@@ -91,18 +114,6 @@
                                                         {{
                                                         render_form(b_form,"/events/{0}/booking".format(event.id))
                                                         }}
-                                                        {% if b_form %}
-                                                        <div id="myModal" class="modal">
-
-                                                            <!-- Modal content -->
-                                                            <div class="modal-content">
-                                                                <span class="close">&times;</span>
-                                                                <p>Some text in the Modal..</p>
-                                                            </div>
-
-                                                        </div>
-
-                                                        {% endif %}
                                                     </div>
 
                                                 </div>
@@ -124,46 +135,75 @@
                 <!-- Comment Section -->
                 <div class="card mt-5 mb-3">
                     <h4 class="card-header text-center">Comments</h4>
+                    {% if event.comments %}
                     <div class="row border-bottom">
-                        {% for comment in event.comments %}
+                        {% for comment in event.comments if comment.id > (event.comments|length ) - 3 %}
                         <div class=" col-md-12 mx-3 mt-1 ">
-                            <b>{{ comment.user.name }} <span class=" ml-2 text-muted">{{ comment.created_at.strftime('%d
-                                    %b
-                                    %Y') }}</span></b>
+                            <b>{{ comment.user.name }} </b>
+                            <span class=" ml-2 text-light text-muted">{{comment.created_at.strftime('%d %b %Y')}}</span>
                             <p>{{ comment.text }}</p>
                         </div>
                         {% endfor %}
+                        <div>
+                            <p class="text-center">
+                                <a class="button" data-bs-toggle="modal" data-bs-target="#viewCommentsModal"> View all
+                                    comments
+                            </p></a>
+                        </div>
+                        <div class="modal fade" id="viewCommentsModal" tabindex="-1" role="dialog"
+                            aria-labelledby="viewCommentsModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered " role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="commentModalLabel">All Comments</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for comment in event.comments %}
+                                        <div class=" col-md-12 mx-3 mt-1 ">
+                                            <b>{{ comment.user.name }} </b>
+                                            <span class=" ml-2 text-light text-muted">{{comment.created_at.strftime('%d
+                                                %b %Y')}}</span>
+                                            <p>{{ comment.text }}</p>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    {% else %}
+                    <h6 class="mt-2 text-center">No Comments available for this event.</h6>
+                    {% endif %}
                     <!-- Add Comment Modal Window  -->
-                    <div class="card-footer">
+                    <div class=" card-footer">
                         <div class="text-center">
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                                 data-bs-target="#commentModal">
                                 <h6>Add Comment</h6>
-
                             </button>
-
                         </div>
 
                         <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
                             aria-labelledby="commentModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog modal-dialog-centered modal-lg text-center" role="document">
                                 <div class="modal-content">
+                                    {% if not current_user.is_authenticated %}
+                                    <div class="notification is-danger">
+                                        <h3 class="mt-5"> Login to access this content. Go to <a
+                                                href="{{ url_for('auth.login') }}">login
+                                                page</h3>
+                                        </a>.
+                                    </div>
+                                    {% endif %}
+                                    {% if current_user.is_authenticated %}
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="commentModalLabel">New Comment</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-
                                     <div class="modal-body">
-                                        {% if not current_user.is_authenticated %}
-                                        <div class="notification is-danger">
-                                            Please Login to access this content. Go to <a
-                                                href="{{ url_for('auth.login') }}">login
-                                                page</a>.
-                                        </div>
-                                        {% endif %}
-                                        {% if current_user.is_authenticated %}
                                         {{ render_form(form,"/events/{0}/comment".format(event.id)) }}
                                         {% endif %}
                                     </div>
