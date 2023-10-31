@@ -15,10 +15,10 @@ class Event(db.Model):
     location = db.Column(db.String(200))
     total_tickets = db.Column(db.Integer)
     tickets_avail = db.Column(db.Integer)
-    status = db.Column(db.String(80))
+    status = db.Column(db.String(80), default="Open")
     description = db.Column(db.String(200))
     image = db.Column(db.String(400))
-    price = db.Column(db.Float(4))
+    price = db.Column(db.Numeric(precision=10, scale=2))
     genre = db.Column(db.String(80))
 
     # add the foreign keys
@@ -55,6 +55,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), index=True, unique=True, nullable=False)
     emailid = db.Column(db.String(100), index=True, nullable=False)
+    phoneid = db.Column(db.String(40), index=True, nullable=False)
     # password is never stored in the DB, an encrypted password is stored
     # the storage should be at least 255 chars long
     password_hash = db.Column(db.String(255), nullable=False)
