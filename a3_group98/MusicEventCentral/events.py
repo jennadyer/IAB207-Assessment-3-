@@ -166,46 +166,33 @@ def details(id):
 def booking(id):
     form = BookingForm()
     event = db.session.scalar(db.select(Event).where(Event.id == id))
-    # update_status(event.id)
-    # Debugging: Print the event and user details
-    print("Event User ID:", event.user_id)
-    print("Current User ID:", current_user.id)
 
     if form.validate_on_submit():
-        # Debugging: Check if form validation is successful
-        print("Form is validated")
+        try:
+            booking = Booking(
+                num_tickets=form.num_tickets.data,
+                total_cost=form.num_tickets.data * event.price,
+                event_id=event.id,
+                user_id=current_user.id
+            )
 
-        # Ensure the user making the booking is the current user (if not, handle as needed)
-        # if event.user_id != current_user.id:
-        #     print("You are not authorized to make this booking")
-        #     flash('You are not authorized to make this booking.', 'danger')
-        #     return redirect(url_for('event.details', id=id))
+            if event.tickets_avail < booking.num_tickets:
+                flash('Booking Failed. Your booking exceeds the allocated ticket range.', 'error')
+                return redirect(url_for('event.details', id=id))
 
-        # Read the booking details from the form
-        booking = Booking(
-            num_tickets=form.num_tickets.data,
-            total_cost=form.num_tickets.data * event.price,
-            event_id=event.id,
-            user_id=current_user.id
-        )
-        event.tickets_avail = event.tickets_avail - booking.num_tickets
-        if event.tickets_avail < 0:
-            flash('Booking Failed. Your booking exceeds the allocated ticket range.')
-            return redirect(url_for('event.details', id=id))
-        print(event.tickets_avail)
-        db.session.add(booking)
-        db.session.commit()
+            event.tickets_avail -= booking.num_tickets
 
-        # Debugging: Check if the booking is created and committed to the database
-        print("Booking created and committed")
+            db.session.add(booking)
+            db.session.commit()
 
-        flash('Successfully created booking', 'success')
+            flash('Successfully created booking', 'success')
 
-        # Redirect to booking history
-        return redirect(url_for('event.booking_history'))
+            return redirect(url_for('event.booking_history'))
+        except Exception as e:
+            flash('An error occurred while processing the booking.', 'error')
+            # Handle the error, e.g., log it and return an error response
 
     return render_template('events/booking_history.html', event=event, form=form)
-
 
 # Route for viewing booking history.
 @evtbp.route('/booking_history')
@@ -221,19 +208,25 @@ def booking_history():
 
 
 # Route for comments.
-@ evtbp.route('/<id>/comment', methods=['GET', 'POST'])
+@evtbp.route('/<id>/comment', methods=['GET', 'POST'])
 @login_required
 def comment(id):
     form = CommentForm()
-    # get the event object associated to the event and the comment
     event = db.session.scalar(db.select(Event).where(Event.id == id))
     if form.validate_on_submit():
-        # read the comment from the form
-        comment = Comment(text=form.text.data,
-                          event_id=event.id, user_id=current_user.id)
-        # add the object to the db session
-        db.session.add(comment)
-        db.session.commit()
-        # Always end with redirect when form is valid
-        # print('Successfully created new event')
-        return redirect(url_for('event.details', id=id))
+        try:
+            comment = Comment(text=form.text.data, event_id=event.id, user_id=current_user.id)
+            db.session.add(comment)
+            db.session.commit()
+            flash('Successfully created new comment', 'success')
+            return redirect(url_for('event.details', id=id))
+        except Exception as e:
+            flash('An error occurred while creating the comment.', 'error')
+            # Handle the error, e.g., log it and return an error response
+    return redirect(url_for('event.details', id=id))    
+
+#Route for errors
+@evtbp.errorhandler(404)
+def page_not_found(e):
+    return render_template('error_404.html'), 404
+
