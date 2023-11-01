@@ -32,7 +32,7 @@ def update_status(id):
 # Custom 404 (Not Found) error handler
 @bp.errorhandler(404)
 def not_found_error(error):
-    return render_template('errors/404.html'), 404
+    return render_template('404.html'), 404
 
 # Custom exception handler for a specific exception
 class CustomException(Exception):
@@ -40,7 +40,7 @@ class CustomException(Exception):
 
 @bp.errorhandler(CustomException)
 def custom_exception_handler(error):
-    return render_template('errors/custom_error.html'), 500
+    return render_template('500.html'), 500
 
 # Search route with error handling
 @bp.route('/search')
